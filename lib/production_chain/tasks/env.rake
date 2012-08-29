@@ -5,7 +5,7 @@ namespace :env do
     Rake::Task['db:create'].invoke
     Rake::Task['db:migrate'].invoke
     # Rake::Task['db:fixtures:load'].invoke
-	Rake::Task['db:seed'].invoke
+    Rake::Task['db:seed'].invoke
   end
 
   desc "Rebuild with production data"
