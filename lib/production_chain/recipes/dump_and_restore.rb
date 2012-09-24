@@ -8,9 +8,9 @@ Capistrano::Configuration.instance.load do
       file_env = ENV['FILE'] || "database"
       run "cd #{current_release} && RAILS_ENV=#{rails_env} FILE=#{file_env} #{rake} db:backup"
       get "#{current_release}/db/dump.tar.gz", "db/dump.tar.gz"
-      cmd = "RAILS_ENV=#{ ENV['RAILS_ENV'] || "development" } FILE=#{file_env} #{rake} db:restore"
+      cmd = "#{rake} db:restore RAILS_ENV=#{ ENV['RAILS_ENV'] || "development" } FILE=#{file_env} "
       puts cmd
-      system cmd && puts('finished')
+      system(cmd) && puts("finished.")
     end
   end
 
