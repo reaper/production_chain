@@ -30,13 +30,16 @@ private
     # result.strip!
     config_file = YAML::load(ERB.new(result).result)
     type = filename == "mongoid" ? "mongodb" : config_file[Rails.env]['adapter']
-    return [
-      type,
-      config_file[Rails.env]['database'],
-      config_file[Rails.env]['username'],
-      config_file[Rails.env]['password'],
-      config_file[Rails.env]['host'] || "127.0.0.1"
-    ]
+
+    database = config_file[Rails.env]['database']
+    username = config_file[Rails.env]['username']
+    password = config_file[Rails.env]['password']
+
+    database = config_file[Rails.env]['sessions']['default']['database'] if database.blank?
+    username = config_file[Rails.env]['sessions']['default']['username'] if username.blank?
+    password = config_file[Rails.env]['sessions']['default']['password'] if password.blank?
+
+    return [ type, database, username, password, config_file[Rails.env]['host'] || "127.0.0.1" ]
   end
 
   def archive_name
