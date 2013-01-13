@@ -35,9 +35,11 @@ private
     username = config_file[Rails.env]['username']
     password = config_file[Rails.env]['password']
 
-    database = config_file[Rails.env]['sessions']['default']['database'] if database.blank?
-    username = config_file[Rails.env]['sessions']['default']['username'] if username.blank?
-    password = config_file[Rails.env]['sessions']['default']['password'] if password.blank?
+    if type.eql?("mongodb") && config_file[Rails.env]['sessions'] && config_file[Rails.env]['sessions']['default']
+      database = config_file[Rails.env]['sessions']['default']['database'] if database.blank?
+      username = config_file[Rails.env]['sessions']['default']['username'] if username.blank?
+      password = config_file[Rails.env]['sessions']['default']['password'] if password.blank?
+    end
 
     return [ type, database, username, password, config_file[Rails.env]['host'] || "127.0.0.1" ]
   end
